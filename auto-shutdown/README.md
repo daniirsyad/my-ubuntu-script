@@ -2,6 +2,10 @@
 
 Monitors network connectivity to a router and automatically shuts down the system after a configurable number of consecutive ping failures. Runs as a systemd service in the background.
 
+## Use Case
+
+Designed for small servers that run on limited or non-standard backup power (e.g. a UPS or small battery). When the network goes down — which typically signals a power outage — the server shuts down gracefully before the backup power runs out, preventing data corruption.
+
 ## How It Works
 
 1. Pings the specified router IP every `DELAY` seconds
