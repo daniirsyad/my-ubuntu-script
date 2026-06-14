@@ -67,6 +67,7 @@ WantedBy=default.target"
     systemctl enable autoshutdown.service
 }
 
+# function to uninstall the auto shutdown script and service
 uninstall() {
     echo "Stopping and disabling auto shutdown service..."
     systemctl stop autoshutdown.service
@@ -80,28 +81,39 @@ uninstall() {
     echo "Auto shutdown script and service uninstalled successfully."
 }
 
+# check requirement before installation
+check_requirements() {
+    echo "Checking requirements..."
+    if ! command -v ping > /dev/null 2>&1; then
+        echo "Error: ping command not found. Please install the 'iputils-ping' package."
+        exit 1
+    else
+        echo "All requirements are met."
+    fi
+}
+
 # Main function to execute the installation steps
 main() {
     if [ "$EUID" -ne 0 ]; then
         echo "Please run as root or use sudo. Thanks!"
-    else
-
-        if [ "$#" -ge 1 ]; then
-            if [ "$1" = "uninstall" ]; then
-                uninstall
-            elif [ "$1" = "install" ] && [ "$#" -eq 4 ]; then
-                create_script "$2" "$3" "$4"
-                create_service
-                echo "Auto shutdown script installed and service created successfully."
-            else
-                clear
-                echo "Usage: $0 install/uninstall <ROUTER-IP-ADDRESS> <DELAY-IN-SECOND> <DROP-LIMIT>"
-                echo "Example: $0 install 192.168.1.1 60 5"
-                echo "This will check the connection to the specified router every 60 seconds and shut down the system after 5 consecutive failures."
-            fi
-
-        fi
+        exit 1
     fi
+    
+    if [ "$1" = "uninstall" ] && [ "$#" -eq 1 ]; then
+        uninstall
+    elif [ "$1" = "install" ] && [ "$#" -eq 4 ]; then
+        check_requirements
+        create_script "$2" "$3" "$4"
+        create_service
+        echo "Auto shutdown script installed and service created successfully."
+    else
+        clear
+        echo "Usage: $0 install/uninstall <ROUTER-IP-ADDRESS> <DELAY-IN-SECOND> <DROP-LIMIT>"
+        echo "Example: $0 install 192.168.1.1 60 5"
+        echo "This will check the connection to the specified router every 60 seconds and shut down the system after 5 consecutive failures."
+    fi
+
+    exit 1
 
 }
 

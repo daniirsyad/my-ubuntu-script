@@ -25,6 +25,7 @@ sudo bash install.sh 192.168.1.1 60 5
 ```
 
 The installer will:
+
 - Inject your configuration values into the script
 - Move the script to `/usr/local/sbin/auto-shutdown.sh`
 - Create and enable the systemd service `autoshutdown.service`
@@ -47,13 +48,6 @@ sudo systemctl disable autoshutdown.service
 ```bash
 tail -f /var/log/auto-shutdown.log
 ```
-
-## Files
-
-| File | Description |
-|---|---|
-| `main_script.sh` | Core monitoring script |
-| `install.sh` | Installer that configures and deploys the script |
 
 ## Requirements
 
