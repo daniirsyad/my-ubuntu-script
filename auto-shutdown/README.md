@@ -8,7 +8,7 @@ Designed for small servers that run on limited or non-standard backup power (e.g
 
 ## Sample Infrastructure
 
-![Sample infrastructure diagram](diagram/sample_infra.png)
+![Sample infrastructure diagram](diagram/sample_infra.jpg)
 
 > [!NOTE]
 > The infrastructure may vary, but the logic remains the same.
